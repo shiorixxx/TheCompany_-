@@ -1,0 +1,454 @@
+// ===========
+// 設定
+// ===========
+
+// 色
+$color-main: #3f51b5; //ベース色
+$color-active: #e81919; // アクティブ色
+$color-background-base: #fff; // 背景色
+$color-text-base: #333; //テキスト色
+$hover-opacity: 0.6; // 透過度
+
+// レイアウト幅
+$layout-width-canvas: 1366px;
+$layout-width-inner: 1088px;
+// ブレークポイント
+$breakpoints: (
+  "sp": "(max-width: 767px)",
+  "tab-only": "(min-width: 768px) and (max-width: #{$layout-width-inner - 1px})",
+  "tab": "(max-width: #{$layout-width-inner - 1px})",
+  "pc": "(min-width: #{$layout-width-inner})",
+);
+
+// 階層
+$layer: (
+  modal: 100,
+  // モダール
+    drawer: 40,
+  // ドロワー
+    floating: 30,
+  // フローティングアイテム
+    header: 20,
+  // ヘッダー
+    footer: 10,
+  // フッター
+    default: 1,
+);
+// 余白
+$padding-tab: 24px;
+$padding-sp: 16px;
+
+// フォント
+$font-family-default: "游ゴシック体", "Yu Gothic", yugothic, "ヒラギノ角ゴ Pro",
+  "Hiragino Kaku Gothic Pro", "メイリオ", meiryo, "MS Pゴシック", "MS PGothic",
+  sans-serif; // 標準フォント
+$font-family-base: $font-family-default;
+$font-size-base: 16px;
+$font-weight-base: 400;
+$line-height-base: 1.6;
+// メディアクエリー
+@mixin mq($breakpoint: sp) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+// ===========
+// 初期化
+// ===========
+*,
+*::before *::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: font-family-base;
+  font-weight: $font-weight-base;
+  color: $color-text-base;
+  line-height: $line-height-base;
+  background: $color-background-base;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: none;
+}
+a {
+  text-decoration: none;
+}
+// ===========
+// 補完クラス
+// ===========
+
+// PCだけ表示
+.hidden-pc {
+  @include mq("pc") {
+    display: none;
+  }
+}
+// タブレットだけ非表示
+.hidden-tab {
+  @include mq("tab-only") {
+    display: none;
+  }
+}
+
+// スマホだけ非表示
+
+// テキスト色の強調
+.color-active {
+  color: $color-active;
+}
+
+// テキストサイズの縮小
+.font-size-small {
+  font-size: 0.9em;
+}
+
+// テキストの強調
+.font-em {
+  font-weight: 700;
+  color: $color-active;
+  font-size: 1.1em;
+}
+// インナー
+.inner {
+  width: $layout-width-inner;
+  max-width: 100%;
+  margin: 0 auto;
+  height: inherit;
+
+  @include mq("tab") {
+    padding-left: $padding-tab;
+    padding-right: $padding-tab;
+  }
+  @include mq("sp") {
+    padding-left: $padding-sp;
+    padding-right: $padding-sp;
+  }
+}
+
+// ボタン「ベース）
+.button {
+  display: inline-block;
+  background: $color-main;
+  color: #fff;
+  text-align: center;
+  padding: 1em 3em;
+  font-size: $font-size-base;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 6px rgba(#000, 0.16);
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+}
+
+//ボタン（メインビジュアル）
+.button-mainvisual {
+  @extend.button;
+
+  transition: all 0.5s ease 0s;
+  padding: 12px 80px;
+  border-radius: 12px;
+  font-size: 30px;
+
+  @include mq("tab") {
+    font-size: 30px;
+    padding-left: 52px;
+    padding-right: 52px;
+  }
+  @include mq("sp") {
+    padding: 10px 36px;
+    border-radius: 8px;
+    font-size: 20px;
+  }
+}
+
+// ===========
+//ヘッダー
+// ===========
+
+.header {
+  background: $color-main;
+  padding: 30px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: map-get($layer, "header"); //重なり順
+  @include mq("sp") {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+}
+
+.header_inner {
+  display: flex;
+  align-items: center;
+}
+
+.header_logo {
+  margin: 0;
+  line-height: 1;
+
+  .img {
+    width: 200px;
+    vertical-align: top;
+
+    @include mq("tab") {
+      width: 180px;
+    }
+    @include mq("sp") {
+      width: 148px;
+    }
+  }
+  a {
+    text-decoration: none;
+    transition: all 0.3s ease 0s;
+  }
+}
+
+.header_nav {
+  margin-left: auto;
+
+  @include mq("sp") {
+    display: none;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+
+  li {
+    margin-right: 30px;
+  }
+  a {
+    transition: all 0.3s ease 0s;
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 3px;
+      background: $color-active;
+      opacity: 0;
+      transition: all 0.3s ease 0s;
+    }
+    &.is-active {
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// ===========
+//メインビジュアル
+// ===========
+
+.mainvisual {
+  height: 700px;
+  width: 100%;
+  background: url(../img/mainvisual.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+
+  @include mq("tab") {
+    height: 600px;
+  }
+
+  @include mq("sp") {
+    height: 500px;
+  }
+}
+
+.mainvisual_content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  margin-top: 50px;
+
+  @include mq("tab") {
+    padding-left: $padding-tab;
+    padding-right: $padding-tab;
+    margin-top: 40px;
+  }
+
+  @include mq("sp") {
+    padding-left: $padding-sp;
+    padding-right: $padding-sp;
+    margin-top: 30px;
+  }
+}
+
+.mainvisial_title {
+  font-size: 68px;
+  font-weight: 700;
+  line-height: 1.4;
+
+  @include mq("tab") {
+    font-size: 56px;
+  }
+  @include mq("sp") {
+    font-size: 36px;
+  }
+}
+
+.mainvisial_lead {
+  font-size: 38px;
+  font-weight: 700;
+  margin-top: 3px;
+
+  @include mq("tab") {
+    font-size: 30px;
+  }
+  @include mq("sp") {
+    font-size: 20px;
+  }
+}
+
+.mainvisial_button {
+  margin-top: 78px;
+
+  @include mq("tab") {
+    margin-top: 62px;
+  }
+
+  @include mq("sp") {
+    margin-top: 42px;
+  }
+}
+
+// ===========
+//カード
+// ===========
+
+// カード
+.section_card {
+  background-color: #efefef;
+  padding: 36px 0 137px 0;
+}
+
+.media {
+  overflow: hidden;
+  background: #fff;
+  border-radius: 4px;
+  padding: 16px;
+  display: block;
+  text-decoration: none;
+  transition: all 0.3s ease 0s;
+
+  .media_img {
+    // text-align: center;
+    img {
+      vertical-align: bottom;
+      width: 100%;
+    }
+  }
+}
+
+// 見出し
+.section_card_header {
+  position: relative;
+  margin-bottom: 1em;
+  font-size: 60px;
+  text-align: center;
+  font-weight: 700;
+
+  @include mq("sp") {
+    font-size: 42px;
+  }
+
+  /*以下で線を表示*/
+  &:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -44px; /*線の上下位置*/
+    // display: inline-block;
+    width: 76px; /*線の長さ*/
+    height: 6px; /*線の太さ*/
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%); /*位置調整*/
+    background-color: $color-main; /*線の色*/
+  }
+}
+.section_card_group {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 58px;
+
+  .card {
+    width: calc(33.33333333% - 30px * 2 / 3);
+    margin-right: 30px;
+    margin-top: 20px;
+
+    &:nth-child(3n) {
+      margin-right: 0;
+    }
+
+    @include mq("tab") {
+      width: calc(50% - 24px / 2);
+      margin-right: 24px;
+
+      &:nth-child(3n) {
+        margin-right: 24px;
+      }
+
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+    }
+
+    @include mq("sp") {
+      width: 100%;
+      margin-right: 0;
+
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .textbox {
+    padding: 22px 0;
+  }
+
+  .card_title {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #6f7579;
+  }
+
+  .card_overviewtext {
+    color: #6f7579;
+  }
+}
+
+// @include mq("sp") {
+//   font-size: 20px;
+// }
